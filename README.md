@@ -6,7 +6,7 @@
 
 ## What it is
 
-A "bartending"* script intended to manage many of the duties required to maintain a consistent UI/UX on bspwm running on convertible / dockable devices like the X1 Yoga and any other quirky setups that requires a bit more hand holding than the usual static (or pain in the arse) configurations available to most WM users.
+A "bartending"* script intended to manage many of the duties required to maintain a consistent UI/UX on bspwm running on convertible / dockable devices like the X1 Yoga and any other quirky setups that require a bit more hand holding than the usual static (or pain in the arse) configurations available to most WM users.
 
 My intention when first writing these scripts was to build something I could iterate on quickly with the intention of eventually shoring things up and living with this thing for a long time. I wanted to keep the memory and CPU footprint as low as possible - if something is chewing up your battery life I don't want it to be baristocrat, it better be a naively written plugin at worst, dig? I found a lot of bar scripts were hungry by default, polling all the things every time and in lockstep with whatever speed you want your clock to update. I decided it was time to start learning more about how scripts work, how process management works, how to write polite bash scripts etc.
 
