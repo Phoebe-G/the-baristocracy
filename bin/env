@@ -1,0 +1,87 @@
+BANNER="
+                        .';cox0XWNd.
+                  .':lxOKNWMMMMMMMWO,
+            .,cdOKNMMMMMMMMMMMMMMMMK:
+        .,cxKNMMMMMMMMMMMMMMMMMMMMMMXc
+      .;d0NMMMMMMMMMMMMMMMMMMMMMMMMMMMX:
+    .l0WMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMK;
+  .kWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM0,
+    ,kWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM0o,
+    .lXMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWO'             ..',::'
+      :0WMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWO,       .,cok0XNWWk'
+        'kWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMKc',:ox0XWMMWNXOd:.
+        .dNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWNWWWX0kdoc;'.
+          .lNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNx,..
+            cKMMMMMMMMMMMMMMMMMMMMMMMMMMWNXK000Oko:,.
+            ,OWMMMMMMMMMMMMMMMMMMWN0ko:,....    ......
+              .kWMMMMMMMMMMMMWX0xl;...,,.            ....
+          .':dKWMMMMMMMMWKko;..      cO0kxxxdooooxOO:  .'.
+      .,cdkKNWMMMMMMMWKkl,.     .,.    .l0WXxc:;;o0NNl   ';.
+  ,cx0XWMMWXOxldXMMXx:.  .;l;..;kXo.     ,dx:....'::o;    :,       .
+  XMMWX0xl;.   ,KWk,   ...lo.  .lxk;     .;oc      .;. ...ll.     .l;
+  coc;..       oNx.  .l; .:.    ..':.      ....,;::cclk0KKXXkc,...,d:
+              '0O'  :0K:,c.       .c'      .,cdkxl:oXMNkc;;dKkxxdlc,.
+              lXo .:xXN0o.         ;'   'dOKNWWMWNXWWXc.   ,l.
+            'OK; .:'.cx:  ..    .''. .oXNXkc;;clllc;..;,  ,c.
+            :XK,  '.   .';ll;,cdo,. .dNKc.. '.  ';;'  :l. ;;
+            cNX;  ..      .,,;;,''..dNO'   .kd..:dl.   . .:'
+            ;XWo  .,.          .l0xdOl.     ;c. .,.      ,:.
+            .kWK, .;.            ':;.                   'l.
+              ,0WO' ;'                                  ,l,                 .;lc;.
+              ;0W0:;'                                .:l.                .,,;lkd,
+                'dXNO;                              .co:.                .'
+                  'lO0xc.                        .:d0x.                 '.
+                    .,oO0ko;'..          ....;cllokocdc.              .,.
+                      .'lOXXOddddc,'';::cdONKkko,c, :00l,..         .:.
+                          ,ol'..,'.   ',lxKMk..oOk;.lNMO,..';:;.  'cc.
+                            .,.  .:;. .kKO0X0;.dx;'..:OK;   .;odlcc,
+                              ;o'  'c:..l:..,OXKNO' ...,do'
+                              cXO'      ;'  .dW0lo:. ;x:..:.
+                            ;dOXx.   ....  .dWo  .'  l:  .:.
+                            ;o'.dK:   .'c:'..dWo   ', ',   ,:.
+                          .o;  :Kl     .co;.lNx.  'l':;    ;,
+                          :c.  ;Kl        .'lKNd..:d;oc    .:.
+                          .l'  .lXOolc:,'..  :xol:;,. ;,     ,.
+                          cl. ,xNMMMMMWNX0Ol..;'   ...,.     ..
+
+      ##### ##
+    ######  /##                           #
+  /#   /  / ##                          ###                   #                                                #
+  /    /  /  ##                           #                   ##                                              ##
+      /  /   /                                                ##                                              ##
+    ## ##  /        /###   ###  /###   ###        /###     ######## /###     /###   ###  /###     /###     ########
+    ## ## /        / ###  / ###/ #### / ###      / #### / ######## / ###    / ###  / ###/ #### / / ###  / ########
+    ## ##/        /   ###/   ##   ###/   ##     ##  ###/     ##   /   ###/ /   ###/   ##   ###/ /   ###/     ##
+    ## ## ###    ##    ##    ##          ##    ####          ##  ##    ## ##          ##       ##    ##      ##
+    ## ##   ###  ##    ##    ##          ##      ###         ##  ##    ## ##          ##       ##    ##      ##
+    #  ##     ## ##    ##    ##          ##        ###       ##  ##    ## ##          ##       ##    ##      ##
+        /      ## ##    ##    ##          ##          ###     ##  ##    ## ##          ##       ##    ##      ##
+    /##/     ###  ##    /#    ##          ##     /###  ##     ##  ##    ## ###     /   ##       ##    /#      ##
+  /  ########     ####/ ##   ###         ### / / #### /      ##   ######   ######/    ###       ####/ ##     ##
+  /     ####        ###   ##   ###         ##/     ###/        ##   ####     #####      ###       ###   ##     ##
+  #
+  ##"
+
+DZEN_PATH="/bin/bash" # it probably isn't..
+DZEN="${DZEN_PATH}/ocelot-dzen"
+GADGET="${DZEN_PATH}/gadgets/textwidth"
+
+# duplicated from my shared variables source script which is used to synchronise the behaviour of several applications
+##########################################################################################################################
+
+#DOCKED=false # comment this out and set a $DOCKED environment variable from your bashrc or whatever runs before you start baristocrat
+              # lol.. I'm ashamed to say that at this time I still just export this manually before starting X,
+              # depending on my needs.
+
+if [ $DOCKED = "true" ]; then
+  FS_MAINBAR=18
+  PAD_MAINBAR=20
+  WINDOW_GAP=8
+else
+  FS_MAINBAR=28
+  PAD_MAINBAR=30
+  WINDOW_GAP=16
+fi
+##########################################################################################################################
+
+FONT="-*-terminus-*-*-*-*-$FS_MAINBAR-*-*-*-*-*-*-*" # I mean.. you don't have to use terminus but I can't vouch for how anything else will behave at this point

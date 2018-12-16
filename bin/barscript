@@ -1,0 +1,109 @@
+#!/bin/bash
+source ./env
+
+OUTPUT=$1
+HRES=$2
+HOFFSET=$3
+DESKTOPS=$4
+CURRENT_DESKTOP=$5
+INPUT_PIPE=$6
+
+FONT_WIDTH=`$GADGET $FONT "w"`
+BSPWM_GAP=14 	# border_width + window_gap
+PADDING=6	# aesthetics
+
+OUTPUT_PIPE="/dev/null"
+DZEN_PIPE="/tmp/barscript_${OUTPUT}_dzen"
+# if an output pipe is specified, the bar will block
+# until something attaches (tail -f ..)
+#
+#OUTPUT_PIPE="/tmp/barscript_${OUTPUT}_out"
+#if [[ ! -p $OUTPUT_PIPE ]]; then
+#	mkfifo $OUTPUT_PIPE
+#fi
+
+if [[ ! -p $DZEN_PIPE ]]; then
+	mkfifo $DZEN_PIPE
+fi
+
+if [[ ! -p $INPUT_PIPE ]]; then
+	mkfifo $INPUT_PIPE
+fi
+
+trap "rm -f $input_pipe; rm -f $OUTPUT_PIPE; kill 0" EXIT
+trap 'trap - TERM; rm -f $INPUT_PIPE; rm -f $DZEN_PIPE; bspc config -m $OUTPUT top_padding 0; sleep 0.25; kill 0' INT TERM QUIT EXIT
+
+bspc config -m $OUTPUT top_padding $PAD_MAINBAR
+
+CBlock() {
+  DATETIME=`date +"%a %b %d %R:%S %p"`
+  printf -v DT "%s" "$DT"
+
+  OFFSET=`bc <<< "(${#DATETIME}*$FONT_WIDTH)/2"`
+  POS=`bc <<< "($HRES/2)-$OFFSET"`
+
+  #printf "^p(_LEFT)^p(%s)%s" "$POS" "$DATETIME"
+  printf "^p(_LEFT)^p(%s)%s" "$POS" "$DATETIME"
+}
+
+RHSBlock() {
+	STATE=`cat  /sys/class/power_supply/BAT0/status`
+	CHARGE=`cat /sys/class/power_supply/BAT0/capacity`
+	printf -v POWER "%s: %s%%" "$STATE" "$CHARGE"
+
+	WIDTH=`bc <<< "(${#POWER}*$FONT_WIDTH)+$BSPWM_GAP+$PADDING"`
+
+	POS=`bc <<< "$HRES-$WIDTH"`
+
+	#printf "^p(_LEFT)^p(%s)%s" "$POS" "$POWER"
+	printf "^p(_LEFT)^p(%s)%s" "$POS" "$POWER"
+}
+
+LHSBlock() {
+  STR=""
+  for i in `seq 1 $DESKTOPS`; do
+    if [ "$CURRENT_DESKTOP" == "$i" ]; then
+      printf -v STR "%s%s" "$STR" "#|"
+    else
+      printf -v STR "%s%s" "$STR" " |"
+    fi
+  done
+  LEN=`bc <<< "${#STR} - 1"`
+  STR=${STR:0:$LEN}
+  STR="[$STR]"
+
+  POS=`bc <<< "$BSPWM_GAP + $PADDING"`
+
+	#printf "^p(_LEFT)^p(%s)%s" "$POS" "$STR"
+  printf "^p(_LEFT)^p(%s)%s" "$POS" "$STR"
+}
+
+(
+while read bar_output <$DZEN_PIPE; do
+	echo $bar_output
+done | $DZEN -x $HOFFSET -w $HRES -p -fn $FONT -ta l
+) &
+
+(
+LHS=$(LHSBlock)
+RHS=$(RHSBlock)
+COUNTER=0
+while true; do
+  ((COUNTER++))
+  if [ "$COUNTER" -gt "59" ]; then
+    COUNTER=0
+    RHS=$(RHSBlock)
+  fi
+
+  printf "%s%s%s\n" "$LHS" "$(CBlock)" "$RHS"
+
+  read -st 1 input <> $INPUT_PIPE
+  if [ ! -z "$input" ]; then
+    INPUT=($input)
+    DESKTOPS=${INPUT[0]}
+    CURRENT_DESKTOP=${INPUT[1]}
+    LHS=$(LHSBlock)
+    echo "change focus to $CURRENT_DESKTOP out of $DESKTOPS" > $OUTPUT_PIPE
+  fi
+done
+) > $DZEN_PIPE
